@@ -9,7 +9,7 @@ export default function HomeScreen() {
 
   return (
     <View>
-      <Text>Home</Text>
+      <Text style={{ fontFamily: "bold" }}>Home</Text>
 
       <Button
         title={"detalhes"}
