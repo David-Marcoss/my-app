@@ -18,15 +18,10 @@ export default function Footer({ children }: IHeaderProps) {
 
 const style = StyleSheet.create({
   viewContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    fontSize: theme.fonts.sizes.title,
-    fontFamily: theme.fonts.family.regularItalic,
+    padding: 16,
+    borderTopEndRadius: 24,
+    borderTopLeftRadius: 24,
     backgroundColor: theme.colors.paper,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
     ...theme.shadows.default,
   },
 });

@@ -5,6 +5,7 @@ import { Button, View } from "react-native";
 import { TNavigationProps } from "../Routes";
 import Header from "../shared/components/Header";
 import Footer from "../shared/components/Footer";
+import BaseInput from "../shared/components/baseInput";
 
 export default function HomeScreen() {
   const navigation = useNavigation<TNavigationProps>();
@@ -21,7 +22,13 @@ export default function HomeScreen() {
       </View>
 
       <Footer>
-        <Text style={{ fontFamily: "bold" }}>Home</Text>
+        <BaseInput
+          label="Nome"
+          asButton
+          onPress={() => navigation.navigate("setUserName")}
+        >
+          <Text style={{ fontFamily: "bold" }}>Home</Text>
+        </BaseInput>
       </Footer>
     </>
   );
