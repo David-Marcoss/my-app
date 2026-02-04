@@ -27,14 +27,20 @@ export default function Routes() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="home"
-        screenLayout={({ children }) => <SafeAreaView>{children}</SafeAreaView>}
+        screenLayout={({ children }) => (
+          //SafeAreaView -> ajusta as bordas da tela automaticamnete (edges prop -> indica em que cantos da tela vai ser aplicado os ajustes)
+          <SafeAreaView style={{ flex: 1 }} edges={["top", "left", "right"]}>
+            {children}
+          </SafeAreaView>
+        )}
         screenOptions={{
-          headerShown: false,
+          headerShown: false, // omit o header
           contentStyle: {
+            // estilo geral da tela
             flex: 1,
             backgroundColor: theme.colors.background,
           },
-        }} // omit o header
+        }}
       >
         <Stack.Screen
           name="home"

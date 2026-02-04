@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Button, View } from "react-native";
 import { TNavigationProps } from "../Routes";
 import Header from "../shared/components/Header";
+import Footer from "../shared/components/Footer";
 
 export default function HomeScreen() {
   const navigation = useNavigation<TNavigationProps>();
@@ -13,15 +14,15 @@ export default function HomeScreen() {
       <Header />
 
       <View style={{ flex: 1 }}>
-        <Text style={{ fontFamily: "bold" }}>Homewd wqdwq</Text>
-
         <Button
           title={"detalhes"}
           onPress={() => navigation.navigate("details", { rate: 3 })}
         />
       </View>
 
-      <Header />
+      <Footer>
+        <Text style={{ fontFamily: "bold" }}>Home</Text>
+      </Footer>
     </>
   );
 }
