@@ -11,6 +11,7 @@ import {
   SafeAreaFrameContext,
   SafeAreaView,
 } from "react-native-safe-area-context";
+import { theme } from "./shared/Theme/Theme";
 
 // define a tipagem das paginas e seus paremetros
 type TScreenDefinitions = {
@@ -26,8 +27,14 @@ export default function Routes() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="home"
-        screenOptions={{ headerShown: false }} // omit o header
         screenLayout={({ children }) => <SafeAreaView>{children}</SafeAreaView>}
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            flex: 1,
+            backgroundColor: theme.colors.background,
+          },
+        }} // omit o header
       >
         <Stack.Screen
           name="home"
