@@ -50,7 +50,7 @@ export default function Routes() {
         <Stack.Group
           screenLayout={({ children }) => (
             <SafeAreaView
-              edges={["left", "right"]}
+              edges={["left", "right", "bottom"]}
               style={{
                 flex: 1,
                 paddingTop: 24,
@@ -80,7 +80,7 @@ export default function Routes() {
             name="setUserName"
             component={SetUserScreen}
             options={{
-              sheetAllowedDetents: [0.4, 0.6],
+              sheetAllowedDetents: [0.4],
             }}
           />
         </Stack.Group>
