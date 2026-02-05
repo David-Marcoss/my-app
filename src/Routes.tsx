@@ -48,7 +48,26 @@ export default function Routes() {
           options={{ title: "Home" }}
         />
         <Stack.Group
-          screenOptions={{ sheetCornerRadius: 24, presentation: "formSheet" }} // configura a borda da pagina e como a pagina é aberta
+          screenLayout={({ children }) => (
+            <SafeAreaView
+              edges={["left", "right"]}
+              style={{
+                flex: 1,
+                paddingTop: 24,
+                paddingHorizontal: 8,
+                backgroundColor: theme.colors.paper,
+              }}
+            >
+              {children}
+            </SafeAreaView>
+          )}
+          screenOptions={{
+            sheetCornerRadius: 24,
+            presentation: "formSheet",
+            contentStyle: {
+              height: "100%",
+            },
+          }} // configura a borda da pagina e como a pagina é aberta
         >
           <Stack.Screen
             name="details"
