@@ -6,15 +6,17 @@ import { theme } from "../Theme/Theme";
 interface IButtonProps {
   text?: string;
   children?: React.ReactNode;
+  onPress?: () => void;
 }
 
-export default function Button({ text, children }: IButtonProps) {
+export default function Button({ text, children, onPress }: IButtonProps) {
   return (
     <Pressable
       style={({ pressed }) => ({
         ...style.buttonContainer,
         ...(pressed ? style.buttonPressed : {}),
       })}
+      onPress={onPress}
     >
       {text ? <Text style={style.text}>{text}</Text> : children}
     </Pressable>

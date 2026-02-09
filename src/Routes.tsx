@@ -15,7 +15,7 @@ import { theme } from "./shared/Theme/Theme";
 
 // define a tipagem das paginas e seus paremetros
 type TScreenDefinitions = {
-  home: undefined;
+  home: undefined | { newUsername: string };
   details: { rate: number };
   setUserName: undefined;
 };

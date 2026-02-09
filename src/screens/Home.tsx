@@ -1,18 +1,29 @@
 import { Text } from "@react-navigation/elements";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, StyleSheet, TextInput, View } from "react-native";
-import { TNavigationProps } from "../Routes";
+import { TNavigationProps, TRouteProps } from "../Routes";
 import Header from "../shared/components/Header";
 import Footer from "../shared/components/Footer";
 import BaseInput from "../shared/components/baseInput";
 import { theme } from "../shared/Theme/Theme";
+import { useEffect, useState } from "react";
 
 export default function HomeScreen() {
+  const [username, setUsername] = useState("");
+
   const navigation = useNavigation<TNavigationProps>();
+
+  const { params } = useRoute<TRouteProps<"home">>();
+
+  useEffect(() => {
+    if (params && params?.newUsername.trim()) {
+      setUsername(params.newUsername);
+    }
+  }, [params?.newUsername]);
 
   return (
     <>
-      <Header />
+      <Header name={username} />
 
       <View style={{ flex: 1 }}>
         <Button
