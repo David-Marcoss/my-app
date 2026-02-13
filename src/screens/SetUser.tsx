@@ -5,10 +5,11 @@ import { Text } from "@react-navigation/elements";
 import { useNavigation } from "@react-navigation/native";
 
 import BaseInput from "../shared/components/baseInput";
-import Button from "../shared/components/Button";
+
 import { theme } from "../shared/Theme/Theme";
 
 import { TNavigationProps } from "../Routes";
+import { Button } from "../shared/components/Button";
 
 export default function SetUserScreen() {
   const [username, setUsername] = useState("");
@@ -35,7 +36,7 @@ export default function SetUserScreen() {
         <View style={{ flex: 1 }} />
 
         <Button
-          text="Salvar"
+          title="Salvar"
           onPress={() => navigation.popTo("home", { newUsername: username })}
         />
       </View>

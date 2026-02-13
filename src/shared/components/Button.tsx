@@ -1,42 +1,81 @@
-import { Text } from "@react-navigation/elements";
-import {} from "@react-navigation/native";
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 import { theme } from "../Theme/Theme";
 
 interface IButtonProps {
-  text?: string;
-  children?: React.ReactNode;
+  title?: string;
+  color?: string;
+  grow?: boolean;
   onPress?: () => void;
+  children?: React.ReactNode;
+  variant?: "contained" | "outlined";
 }
-
-export default function Button({ text, children, onPress }: IButtonProps) {
+export const Button = ({
+  children,
+  title,
+  grow,
+  color,
+  variant = "contained",
+  onPress,
+}: IButtonProps) => {
   return (
     <Pressable
-      style={({ pressed }) => ({
-        ...style.buttonContainer,
-        ...(pressed ? style.buttonPressed : {}),
-      })}
       onPress={onPress}
+      style={({ pressed }) => ({
+        ...styles.button,
+        ...(grow ? { flexGrow: 1 } : {}),
+        ...(pressed ? styles.buttonPressed : {}),
+        ...(variant === "contained" ? styles.buttonContained : {}),
+        ...(variant === "outlined"
+          ? {
+              ...styles.buttonOutlined,
+              ...(color && { borderColor: color }),
+            }
+          : {}),
+      })}
     >
-      {text ? <Text style={style.text}>{text}</Text> : children}
+      {children}
+      {!children && (
+        <Text
+          style={{
+            ...styles.buttonText,
+            ...(variant === "contained" ? styles.buttonContainedText : {}),
+            ...(variant === "outlined" ? styles.buttonOutlinedText : {}),
+          }}
+        >
+          {title}
+        </Text>
+      )}
     </Pressable>
   );
-}
+};
 
-const style = StyleSheet.create({
-  buttonContainer: {
-    flexDirection: "column",
-    padding: 14,
-    backgroundColor: theme.colors.primary,
+const styles = StyleSheet.create({
+  button: {
+    padding: 12,
     borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonPressed: {
     opacity: 0.8,
   },
-  text: {
-    textAlign: "center",
-    fontSize: theme.fonts.sizes.body,
-    fontFamily: theme.fonts.family.regular,
+  buttonContained: {
+    backgroundColor: theme.colors.primary,
+  },
+  buttonOutlined: {
+    padding: 10,
+    borderWidth: 2,
+    borderColor: theme.colors.primary,
+  },
+  buttonText: {
     color: theme.colors.primaryText,
+    fontSize: theme.fonts.sizes.body,
+    fontFamily: theme.fonts.family.bold,
+  },
+  buttonContainedText: {
+    color: theme.colors.primaryText,
+  },
+  buttonOutlinedText: {
+    color: theme.colors.primary,
   },
 });

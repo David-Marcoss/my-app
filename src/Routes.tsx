@@ -16,7 +16,7 @@ import { theme } from "./shared/Theme/Theme";
 // define a tipagem das paginas e seus paremetros
 type TScreenDefinitions = {
   home: undefined | { newUsername: string };
-  details: { rate: number };
+  details: { rate: number, id?: string };
   setUserName: undefined;
 };
 
@@ -73,7 +73,7 @@ export default function Routes() {
             name="details"
             component={DetailScreen}
             options={{
-              sheetAllowedDetents: [0.8, 0.95], // configura o tamanho da tela que vai ser exibida vai de 0 a 1
+              sheetAllowedDetents: [0.8], // configura o tamanho da tela que vai ser exibida vai de 0 a 1
             }}
           />
           <Stack.Screen

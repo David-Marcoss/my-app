@@ -48,7 +48,7 @@ export default function HomeScreen() {
           {username ? (
             <View style={style.footerStarContainer}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("details", { rate: 1 })}
+                onPress={() => navigation.navigate("details", { rate: 1, id: "123" })}
               >
                 <MaterialIcons
                   name="star-border"
