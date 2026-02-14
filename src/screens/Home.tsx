@@ -2,6 +2,7 @@ import { Text } from "@react-navigation/elements";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Button,
+  FlatList,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -15,9 +16,81 @@ import { theme } from "../shared/Theme/Theme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import { useEffect, useState } from "react";
+import Card from "../shared/components/card";
+import IHumorData from "../shared/interfaces/IHumorData";
+import ListItems from "../shared/components/listItems";
 
 export default function HomeScreen() {
   const [username, setUsername] = useState("");
+  const [humorData, setHumorData] = useState<IHumorData[]>([
+    {
+      id: "1",
+      description: "Estou me sentindo muito feliz hoje!",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 4,
+    },
+    {
+      id: "2",
+      description: "Hoje foi um dia difícil, mas consegui superar.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 2,
+    },
+    {
+      id: "3",
+      description: "Estou me sentindo neutro hoje.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 3,
+    },
+    {
+      id: "4",
+      description: "Estou me sentindo neutro hoje.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 4,
+    },
+    {
+      id: "5",
+      description: "Estou me sentindo muito feliz hoje!",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 5,
+    },
+    {
+      id: "6",
+      description: "Hoje foi um dia difícil, mas consegui superar.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 2,
+    },
+    {
+      id: "7",
+      description: "Estou me sentindo neutro hoje.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 3,
+    },
+    {
+      id: "8",
+      description: "Estou me sentindo neutro hoje.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 4,
+    },
+
+    {
+      id: "9",
+      description: "Hoje foi um dia difícil, mas consegui superar.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 2,
+    },
+    {
+      id: "10",
+      description: "Estou me sentindo neutro hoje.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 3,
+    },
+    {
+      id: "11",
+      description: "Estou me sentindo neutro hoje.",
+      dateTime: new Date().toLocaleString("pt-BR"),
+      rate: 4,
+    },
+  ]);
 
   const navigation = useNavigation<TNavigationProps>();
 
@@ -33,11 +106,19 @@ export default function HomeScreen() {
     <>
       <Header name={username} />
 
-      <View style={style.emptyContainer}>
-        <Text style={style.emptyText}>
-          Você ainda não {"\n"} registrou seu humor hoje.
-        </Text>
-      </View>
+      <FlatList
+        contentContainerStyle={style.listContainer}
+        data={humorData}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <Card key={item.id} data={item} />}
+        ListEmptyComponent={() => (
+          <View style={style.emptyContainer}>
+            <Text style={style.emptyText}>
+              Você ainda não {"\n"} registrou seu humor hoje.
+            </Text>
+          </View>
+        )}
+      />
 
       <Footer>
         <View style={style.viewContainer}>
@@ -48,7 +129,9 @@ export default function HomeScreen() {
           {username ? (
             <View style={style.footerStarContainer}>
               <TouchableOpacity
-                onPress={() => navigation.navigate("details", { rate: 1, id: "123" })}
+                onPress={() =>
+                  navigation.navigate("details", { rate: 1, id: "123" })
+                }
               >
                 <MaterialIcons
                   name="star-border"
@@ -128,6 +211,11 @@ const style = StyleSheet.create({
     padding: 8,
     fontSize: theme.fonts.sizes.body,
     fontFamily: theme.fonts.family.regular,
+  },
+  listContainer: {
+    flexGrow: 1,
+    flexDirection: "column",
+    gap: 4,
   },
   emptyContainer: {
     flex: 1,
