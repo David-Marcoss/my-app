@@ -6,6 +6,7 @@ import {
   useFonts,
 } from "@expo-google-fonts/inter";
 import * as SplashScreen from "expo-splash-screen";
+import "react-native-get-random-values";
 
 import Routes from "./Routes";
 

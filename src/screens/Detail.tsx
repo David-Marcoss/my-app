@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../shared/components/Button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { v4 as uuid } from "uuid";
 
 export default function DetailScreen() {
   const [rate, setRate] = useState(0);
@@ -142,7 +143,13 @@ export default function DetailScreen() {
 
       <View style={style.actionsContainer}>
         {params.id && (
-          <Button variant="outlined" color={theme.colors.error}>
+          <Button
+            variant="outlined"
+            color={theme.colors.error}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
             <MaterialIcons
               size={18}
               name={"delete"}
@@ -156,7 +163,20 @@ export default function DetailScreen() {
           variant="outlined"
           onPress={() => navigation.goBack()}
         />
-        <Button grow title="Salvar" />
+        <Button
+          grow
+          title="Salvar"
+          onPress={() => {
+            navigation.popTo("home", {
+              item: {
+                id: params.id || uuid(),
+                description,
+                dateTime: dateTime.toLocaleString("pt-BR"),
+                rate,
+              },
+            });
+          }}
+        />
       </View>
     </View>
   );

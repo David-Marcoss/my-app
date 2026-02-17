@@ -12,11 +12,15 @@ import {
   SafeAreaView,
 } from "react-native-safe-area-context";
 import { theme } from "./shared/Theme/Theme";
+import IHumorData from "./shared/interfaces/IHumorData";
 
 // define a tipagem das paginas e seus paremetros
 type TScreenDefinitions = {
-  home: undefined | { newUsername: string };
-  details: { rate: number, id?: string };
+  home: undefined | { newUsername?: string; item?: IHumorData };
+  details: {
+    rate: number;
+    id?: string;
+  };
   setUserName: undefined;
 };
 

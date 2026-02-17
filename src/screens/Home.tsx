@@ -18,89 +18,43 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
 import Card from "../shared/components/card";
 import IHumorData from "../shared/interfaces/IHumorData";
-import ListItems from "../shared/components/listItems";
 
 export default function HomeScreen() {
   const [username, setUsername] = useState("");
-  const [humorData, setHumorData] = useState<IHumorData[]>([
-    {
-      id: "1",
-      description: "Estou me sentindo muito feliz hoje!",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 4,
-    },
-    {
-      id: "2",
-      description: "Hoje foi um dia difícil, mas consegui superar.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 2,
-    },
-    {
-      id: "3",
-      description: "Estou me sentindo neutro hoje.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 3,
-    },
-    {
-      id: "4",
-      description: "Estou me sentindo neutro hoje.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 4,
-    },
-    {
-      id: "5",
-      description: "Estou me sentindo muito feliz hoje!",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 5,
-    },
-    {
-      id: "6",
-      description: "Hoje foi um dia difícil, mas consegui superar.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 2,
-    },
-    {
-      id: "7",
-      description: "Estou me sentindo neutro hoje.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 3,
-    },
-    {
-      id: "8",
-      description: "Estou me sentindo neutro hoje.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 4,
-    },
-
-    {
-      id: "9",
-      description: "Hoje foi um dia difícil, mas consegui superar.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 2,
-    },
-    {
-      id: "10",
-      description: "Estou me sentindo neutro hoje.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 3,
-    },
-    {
-      id: "11",
-      description: "Estou me sentindo neutro hoje.",
-      dateTime: new Date().toLocaleString("pt-BR"),
-      rate: 4,
-    },
-  ]);
+  const [humorData, setHumorData] = useState<IHumorData[]>([]);
 
   const navigation = useNavigation<TNavigationProps>();
 
   const { params } = useRoute<TRouteProps<"home">>();
 
   useEffect(() => {
-    if (params && params?.newUsername.trim()) {
+    if (params && params.newUsername?.trim()) {
       setUsername(params.newUsername);
     }
   }, [params?.newUsername]);
+
+  useEffect(() => {
+    const item = params?.item;
+    if (item) {
+      handleCreateItem(item);
+    }
+  }, [params?.item]);
+
+  const handleCreateItem = (item: IHumorData) => {
+    if (humorData.some((data) => data.id === item.id)) return;
+
+    setHumorData((prevData) => [...prevData, item]);
+  };
+
+  const handleDeleteItem = (id: string) => {
+    setHumorData((prevData) => prevData.filter((item) => item.id !== id));
+  };
+
+  const handleNavigateToDetails = (rate: number) => {
+    navigation.navigate("details", {
+      rate,
+    });
+  };
 
   return (
     <>
@@ -128,47 +82,35 @@ export default function HomeScreen() {
 
           {username ? (
             <View style={style.footerStarContainer}>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("details", { rate: 1, id: "123" })
-                }
-              >
+              <TouchableOpacity onPress={() => handleNavigateToDetails(1)}>
                 <MaterialIcons
                   name="star-border"
                   size={36}
                   color={theme.colors.textPlaceholder}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("details", { rate: 2 })}
-              >
+              <TouchableOpacity onPress={() => handleNavigateToDetails(2)}>
                 <MaterialIcons
                   name="star-border"
                   size={36}
                   color={theme.colors.textPlaceholder}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("details", { rate: 3 })}
-              >
+              <TouchableOpacity onPress={() => handleNavigateToDetails(3)}>
                 <MaterialIcons
                   name="star-border"
                   size={36}
                   color={theme.colors.textPlaceholder}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("details", { rate: 4 })}
-              >
+              <TouchableOpacity onPress={() => handleNavigateToDetails(4)}>
                 <MaterialIcons
                   name="star-border"
                   size={36}
                   color={theme.colors.textPlaceholder}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("details", { rate: 5 })}
-              >
+              <TouchableOpacity onPress={() => handleNavigateToDetails(5)}>
                 <MaterialIcons
                   name="star-border"
                   size={36}
