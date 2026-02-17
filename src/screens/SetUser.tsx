@@ -10,6 +10,9 @@ import { theme } from "../shared/Theme/Theme";
 
 import { TNavigationProps } from "../Routes";
 import { Button } from "../shared/components/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export const USERNAME_STORAGE_KEY = "username";
 
 export default function SetUserScreen() {
   const [username, setUsername] = useState("");
@@ -17,6 +20,16 @@ export default function SetUserScreen() {
   const navigation = useNavigation<TNavigationProps>();
 
   const insets = useSafeAreaInsets();
+
+  const handleSaveUsername = async () => {
+    if (username) {
+      await AsyncStorage.setItem(
+        USERNAME_STORAGE_KEY,
+        JSON.stringify(username),
+      );
+      navigation.popTo("home", { newUsername: username });
+    }
+  };
 
   return (
     <>
@@ -35,10 +48,7 @@ export default function SetUserScreen() {
 
         <View style={{ flex: 1 }} />
 
-        <Button
-          title="Salvar"
-          onPress={() => navigation.popTo("home", { newUsername: username })}
-        />
+        <Button title="Salvar" onPress={handleSaveUsername} />
       </View>
     </>
   );

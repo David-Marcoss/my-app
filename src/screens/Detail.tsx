@@ -15,6 +15,10 @@ import { Button } from "../shared/components/Button";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { v4 as uuid } from "uuid";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import IHumorData from "../shared/interfaces/IHumorData";
+
+export const HUMOR_DATA_STORAGE_KEY = "humor-data";
 
 export default function DetailScreen() {
   const [rate, setRate] = useState(0);
@@ -34,6 +38,30 @@ export default function DetailScreen() {
 
   const starIsActive = (starNumber: number) => {
     return starNumber <= rate;
+  };
+
+  const handleCreateHumorData = async () => {
+    const item = {
+      id: params.id || uuid(),
+      description,
+      dateTime: dateTime.toLocaleString("pt-BR"),
+      rate,
+    };
+
+    const humorData = await AsyncStorage.getItem(HUMOR_DATA_STORAGE_KEY);
+
+    const parseData = humorData ? (JSON.parse(humorData) as IHumorData[]) : [];
+
+    parseData.unshift(item);
+
+    await AsyncStorage.setItem(
+      HUMOR_DATA_STORAGE_KEY,
+      JSON.stringify(parseData),
+    );
+
+    navigation.popTo("home", {
+      item,
+    });
   };
 
   return (
@@ -163,20 +191,7 @@ export default function DetailScreen() {
           variant="outlined"
           onPress={() => navigation.goBack()}
         />
-        <Button
-          grow
-          title="Salvar"
-          onPress={() => {
-            navigation.popTo("home", {
-              item: {
-                id: params.id || uuid(),
-                description,
-                dateTime: dateTime.toLocaleString("pt-BR"),
-                rate,
-              },
-            });
-          }}
-        />
+        <Button grow title="Salvar" onPress={handleCreateHumorData} />
       </View>
     </View>
   );

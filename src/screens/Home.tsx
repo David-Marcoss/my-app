@@ -18,6 +18,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useEffect, useState } from "react";
 import Card from "../shared/components/card";
 import IHumorData from "../shared/interfaces/IHumorData";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { USERNAME_STORAGE_KEY } from "./SetUser";
+import { HUMOR_DATA_STORAGE_KEY } from "./Detail";
 
 export default function HomeScreen() {
   const [username, setUsername] = useState("");
@@ -28,16 +31,29 @@ export default function HomeScreen() {
   const { params } = useRoute<TRouteProps<"home">>();
 
   useEffect(() => {
-    if (params && params.newUsername?.trim()) {
-      setUsername(params.newUsername);
-    }
+    const fetch = async () => {
+      const name = await AsyncStorage.getItem(USERNAME_STORAGE_KEY);
+      if (name) {
+        setUsername(name);
+      }
+    };
+
+    fetch();
   }, [params?.newUsername]);
 
   useEffect(() => {
-    const item = params?.item;
-    if (item) {
-      handleCreateItem(item);
-    }
+    const fetch = async () => {
+      const humorData = await AsyncStorage.getItem(HUMOR_DATA_STORAGE_KEY);
+      console.log(humorData);
+
+      if (humorData) {
+        const parseData = JSON.parse(humorData) as IHumorData[];
+
+        setHumorData(parseData);
+      }
+    };
+
+    fetch();
   }, [params?.item]);
 
   const handleCreateItem = (item: IHumorData) => {
