@@ -3,6 +3,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Button,
   FlatList,
+  Pressable,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -44,7 +45,6 @@ export default function HomeScreen() {
   useEffect(() => {
     const fetch = async () => {
       const humorData = await AsyncStorage.getItem(HUMOR_DATA_STORAGE_KEY);
-      console.log(humorData);
 
       if (humorData) {
         const parseData = JSON.parse(humorData) as IHumorData[];
@@ -56,15 +56,29 @@ export default function HomeScreen() {
     fetch();
   }, [params?.item]);
 
-  const handleCreateItem = (item: IHumorData) => {
-    if (humorData.some((data) => data.id === item.id)) return;
+  useEffect(() => {
+    const fetch = async () => {
+      const id = params?.deleteItemId;
+      if (id) {
+        const data = await AsyncStorage.getItem(HUMOR_DATA_STORAGE_KEY);
 
-    setHumorData((prevData) => [...prevData, item]);
-  };
+        if (data) {
+          const parseData = JSON.parse(data) as IHumorData[];
 
-  const handleDeleteItem = (id: string) => {
-    setHumorData((prevData) => prevData.filter((item) => item.id !== id));
-  };
+          const newData = parseData.filter((i) => i.id !== id);
+
+          setHumorData(newData);
+
+          await AsyncStorage.setItem(
+            HUMOR_DATA_STORAGE_KEY,
+            JSON.stringify(newData),
+          );
+        }
+      }
+    };
+
+    fetch();
+  }, [params?.deleteItemId]);
 
   const handleNavigateToDetails = (rate: number) => {
     navigation.navigate("details", {
@@ -80,7 +94,13 @@ export default function HomeScreen() {
         contentContainerStyle={style.listContainer}
         data={humorData}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <Card key={item.id} data={item} />}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => navigation.navigate("details", { id: item.id })}
+          >
+            <Card key={item.id} data={item} />
+          </Pressable>
+        )}
         ListEmptyComponent={() => (
           <View style={style.emptyContainer}>
             <Text style={style.emptyText}>

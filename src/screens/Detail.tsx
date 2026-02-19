@@ -34,17 +34,41 @@ export default function DetailScreen() {
     if (params && params?.rate) {
       setRate(params.rate);
     }
-  }, []);
+  }, [params.rate]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const humorData = await AsyncStorage.getItem(HUMOR_DATA_STORAGE_KEY);
+
+      const parseData = humorData
+        ? (JSON.parse(humorData) as IHumorData[])
+        : [];
+
+      if (params.id) {
+        const item = parseData.find((i) => i.id === params.id);
+
+        if (item) {
+          setDateTime(new Date(item.dateTime));
+          setDescription(item.description);
+          setRate(item.rate);
+        }
+      }
+    };
+
+    if (params && params?.id) {
+      fetch();
+    }
+  }, [params.id]);
 
   const starIsActive = (starNumber: number) => {
     return starNumber <= rate;
   };
 
-  const handleCreateHumorData = async () => {
+  const handleSaveHumorData = async () => {
     const item = {
       id: params.id || uuid(),
       description,
-      dateTime: dateTime.toLocaleString("pt-BR"),
+      dateTime: dateTime.toDateString(),
       rate,
     };
 
@@ -52,8 +76,15 @@ export default function DetailScreen() {
 
     const parseData = humorData ? (JSON.parse(humorData) as IHumorData[]) : [];
 
-    parseData.unshift(item);
+    if (params.id) {
+      const itemIndex = parseData.findIndex((i) => i.id === params.id);
 
+      if (itemIndex !== -1) {
+        parseData.splice(itemIndex, 1, item);
+      }
+    } else {
+      parseData.unshift(item);
+    }
     await AsyncStorage.setItem(
       HUMOR_DATA_STORAGE_KEY,
       JSON.stringify(parseData),
@@ -175,7 +206,10 @@ export default function DetailScreen() {
             variant="outlined"
             color={theme.colors.error}
             onPress={() => {
-              navigation.goBack();
+              navigation.popTo("home", {
+                deleteItemId: params.id,
+                item: undefined,
+              });
             }}
           >
             <MaterialIcons
@@ -191,7 +225,7 @@ export default function DetailScreen() {
           variant="outlined"
           onPress={() => navigation.goBack()}
         />
-        <Button grow title="Salvar" onPress={handleCreateHumorData} />
+        <Button grow title="Salvar" onPress={handleSaveHumorData} />
       </View>
     </View>
   );

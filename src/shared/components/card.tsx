@@ -21,7 +21,9 @@ export default function Card({
   };
   return (
     <View style={style.cardContainer}>
-      <Text style={style.dateTimeText}>{dateTime}</Text>
+      <Text style={style.dateTimeText}>
+        {new Date(dateTime).toLocaleString("pt-BR")}
+      </Text>
 
       <View style={style.starContainer}>
         <TouchableOpacity>

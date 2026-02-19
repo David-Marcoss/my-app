@@ -16,9 +16,11 @@ import IHumorData from "./shared/interfaces/IHumorData";
 
 // define a tipagem das paginas e seus paremetros
 type TScreenDefinitions = {
-  home: undefined | { newUsername?: string; item?: IHumorData };
+  home:
+    | undefined
+    | { newUsername?: string; item?: IHumorData; deleteItemId?: string };
   details: {
-    rate: number;
+    rate?: number;
     id?: string;
   };
   setUserName: undefined;
